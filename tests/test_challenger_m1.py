@@ -336,6 +336,7 @@ exit 0
 
         app = challenger_installer.install(app_file)
         app.exec_args = '--title "My Complex App" --path \'/space dir/file.txt\' --empty=""'
+        log_file.unlink(missing_ok=True)
 
         proc = challenger_installer.launch(app, extra_args=['--user-name', 'Jane Doe', 'param with spaces'])
         assert proc.wait(timeout=5) == 0
