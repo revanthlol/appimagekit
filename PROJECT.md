@@ -118,8 +118,8 @@ Every feature from user requirements (R1–R5 + local file update) is inventorie
 | M1 | Core Storage & Dual-Mode Installation | Package setup (`pyproject.toml`), SQLite database & `App` model, `InstallerService` (paths, chmod, SHA256, launch), path resolver | none | DONE |
 | M2 | Desktop Entry & Icon Management | `IconExtractorService` (extraction + fallbacks), `DesktopEntryService` (freedesktop v1.5 gen/parse/edit), clean uninstallation purge | M1 | DONE |
 | M3 | Multi-Tier Cascading Update Engine | `UpdaterService` (Tier 1: zsync, Tier 2: GitHub Releases, Tier 3: Direct URL, Tier 4: Local in-place file update, Batch Update) | M1, M2 | DONE |
-| M4 | Auxiliary Services & Complete CLI | `SandboxDetectorService`, `AutostartManager`, `BackupManagerService`, `HubCatalogService`, `IntegrityVerifierService`, Click CLI commands | M1, M2, M3 | PLANNED |
-| M5 | GTK4 / Libadwaita User Interface | Window, Sidebar (filters + disk usage), AppGrid, AppCard, AppDetailsView, DesktopEditorDialog, DropTarget, AsyncWorker | M1, M2, M3, M4 | PLANNED |
+| M4 | Auxiliary Services & Complete CLI | `SandboxDetectorService`, `AutostartManager`, `BackupManagerService`, `HubCatalogService`, `IntegrityVerifierService`, Click CLI commands | M1, M2, M3 | DONE |
+| M5 | GTK4 / Libadwaita User Interface | Window, Sidebar (filters + disk usage), AppGrid, AppCard, AppDetailsView, DesktopEditorDialog, DropTarget, AsyncWorker | M1, M2, M3, M4 | IN_PROGRESS |
 | M6 | Final Milestone: E2E Test Pass & Hardening | Phase 1: Pass 100% of E2E test suite (Tiers 1-4). Phase 2: Adversarial coverage hardening (Tier 5) | M1, M2, M3, M4, M5, TEST_READY.md | PLANNED |
 
 ## Interface Contracts
