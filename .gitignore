@@ -31,3 +31,6 @@ Thumbs.db
 # AppImageKit runtime
 *.AppImage
 !data/icons/
+
+# Agent Workspaces & Logs
+.agents/

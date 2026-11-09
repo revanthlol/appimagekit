@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "appimagekit"
+version = "0.1.0"
+description = "Native Linux AppImage installer and manager with GTK4/Libadwaita UI and CLI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Revanth", email = "revanth@example.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: X11 Applications :: GTK",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Desktop Environment",
+    "Topic :: System :: Installation/Setup",
+]
+dependencies = [
+    "click>=8.1.0",
+    "requests>=2.28.0",
+    "pyxdg>=0.28",
+    "PyGObject>=3.42.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+appimagekit = "appimagekit.main:main"
+
+[project.urls]
+Homepage = "https://github.com/revanthlol/appimagekit"
+Repository = "https://github.com/revanthlol/appimagekit"
+Bug-Tracker = "https://github.com/revanthlol/appimagekit/issues"
+
+[tool.setuptools]
+packages = [
+    "appimagekit",
+    "appimagekit.models",
+    "appimagekit.services",
+    "appimagekit.utils",
+    "src",
+    "src.models",
+    "src.services",
+    "src.utils",
+]
+
+[tool.setuptools.package-dir]
+appimagekit = "src"
+"appimagekit.models" = "src/models"
+"appimagekit.services" = "src/services"
+"appimagekit.utils" = "src/utils"
+src = "src"
+"src.models" = "src/models"
+"src.services" = "src/services"
+"src.utils" = "src/utils"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "tier1: Tier 1 Feature Coverage E2E tests (R1-R5)",
+    "tier2: Tier 2 Boundary & Corner Cases E2E tests",
+    "tier3: Tier 3 Cross-Feature Combination E2E tests",
+    "tier4: Tier 4 Real-World Scenario E2E tests",
+]
