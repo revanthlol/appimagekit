@@ -104,32 +104,50 @@ class Sidebar(Gtk.Box):
         self.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
 
         # 4. Disk Usage & Status Summary Footer
-        self.summary_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        self.summary_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.summary_box.set_margin_top(10)
-        self.summary_box.set_margin_bottom(12)
+        self.summary_box.set_margin_bottom(14)
         self.summary_box.set_margin_start(16)
         self.summary_box.set_margin_end(16)
 
         # App count row
+        apps_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        apps_icon = Gtk.Image.new_from_icon_name("package-x-generic-symbolic")
+        apps_icon.set_pixel_size(14)
+        apps_icon.add_css_class("dim-label")
+        apps_row.append(apps_icon)
         self.apps_count_label = Gtk.Label(label="0 installed apps")
         self.apps_count_label.set_halign(Gtk.Align.START)
         self.apps_count_label.add_css_class("caption")
         self.apps_count_label.add_css_class("dim-label")
-        self.summary_box.append(self.apps_count_label)
+        apps_row.append(self.apps_count_label)
+        self.summary_box.append(apps_row)
 
         # Disk usage row
-        self.disk_usage_label = Gtk.Label(label="0 B disk usage")
+        disk_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        disk_icon = Gtk.Image.new_from_icon_name("drive-harddisk-symbolic")
+        disk_icon.set_pixel_size(14)
+        disk_icon.add_css_class("dim-label")
+        disk_row.append(disk_icon)
+        self.disk_usage_label = Gtk.Label(label="0 B storage used")
         self.disk_usage_label.set_halign(Gtk.Align.START)
         self.disk_usage_label.add_css_class("caption")
         self.disk_usage_label.add_css_class("dim-label")
-        self.summary_box.append(self.disk_usage_label)
+        disk_row.append(self.disk_usage_label)
+        self.summary_box.append(disk_row)
 
         # Updates count row
+        updates_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.updates_status_icon = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+        self.updates_status_icon.set_pixel_size(14)
+        self.updates_status_icon.add_css_class("dim-label")
+        updates_row.append(self.updates_status_icon)
         self.updates_status_label = Gtk.Label(label="All apps up to date")
         self.updates_status_label.set_halign(Gtk.Align.START)
         self.updates_status_label.add_css_class("caption")
         self.updates_status_label.add_css_class("dim-label")
-        self.summary_box.append(self.updates_status_label)
+        updates_row.append(self.updates_status_label)
+        self.summary_box.append(updates_row)
 
         self.append(self.summary_box)
 
@@ -191,11 +209,11 @@ class Sidebar(Gtk.Box):
         """Update aggregate installed apps count, total storage, and update count."""
         # 1. Total apps
         app_text = "1 app installed" if total_apps == 1 else f"{total_apps} apps installed"
-        self.apps_count_label.set_text(f"📦 {app_text}")
+        self.apps_count_label.set_text(app_text)
 
         # 2. Disk usage
         formatted_size = format_size(total_bytes)
-        self.disk_usage_label.set_text(f"💾 {formatted_size} total storage")
+        self.disk_usage_label.set_text(f"{formatted_size} storage used")
 
         # 3. Updates count & badge
         self.set_update_count(updates_count)
@@ -207,13 +225,19 @@ class Sidebar(Gtk.Box):
             if updates_badge:
                 updates_badge.set_text(str(updates_count))
                 updates_badge.set_visible(True)
-            self.updates_status_label.set_text(f"🔄 {updates_count} update(s) available")
+            self.updates_status_icon.set_from_icon_name("software-update-available-symbolic")
+            self.updates_status_icon.remove_css_class("dim-label")
+            self.updates_status_icon.add_css_class("accent")
+            self.updates_status_label.set_text(f"{updates_count} update(s) available")
             self.updates_status_label.remove_css_class("dim-label")
             self.updates_status_label.add_css_class("accent")
         else:
             if updates_badge:
                 updates_badge.set_text("")
                 updates_badge.set_visible(False)
-            self.updates_status_label.set_text("✅ All apps up to date")
+            self.updates_status_icon.set_from_icon_name("emblem-ok-symbolic")
+            self.updates_status_icon.remove_css_class("accent")
+            self.updates_status_icon.add_css_class("dim-label")
+            self.updates_status_label.set_text("All apps up to date")
             self.updates_status_label.remove_css_class("accent")
             self.updates_status_label.add_css_class("dim-label")

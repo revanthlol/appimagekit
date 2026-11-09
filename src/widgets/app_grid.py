@@ -80,9 +80,10 @@ class AppGridView(Gtk.Box):
 
         # 3. Empty State Status Page
         self.status_page = Adw.StatusPage()
-        self.status_page.set_icon_name("application-x-executable-symbolic")
-        self.status_page.set_title("No Applications Found")
-        self.status_page.set_description("Drop .AppImage files here or click '+' in the header to install.")
+        self.status_page.set_icon_name("system-software-install-symbolic")
+        self.status_page.set_title("No Applications Installed")
+        self.status_page.set_description("Drag and drop .AppImage files anywhere to install, or click '+' in the header.")
+        self.status_page.add_css_class("compact")
         self.stack.add_named(self.status_page, "empty")
 
         self.append(self.stack)

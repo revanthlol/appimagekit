@@ -52,7 +52,26 @@ class AppImageKitApplication(Adw.Application):
     def do_startup(self) -> None:
         """Initialize application state, style provider, and actions."""
         Adw.Application.do_startup(self)
+        self._load_stylesheet()
         self._setup_actions()
+
+    def _load_stylesheet(self) -> None:
+        """Load custom CSS stylesheet with animations and tactile micro-interactions."""
+        try:
+            css_path = Path(__file__).parent / "style.css"
+            if css_path.is_file():
+                provider = Gtk.CssProvider()
+                provider.load_from_path(str(css_path))
+                display = Gdk.Display.get_default()
+                if display:
+                    Gtk.StyleContext.add_provider_for_display(
+                        display,
+                        provider,
+                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+                    )
+                    logger.debug("Loaded custom CSS from %s", css_path)
+        except Exception as e:
+            logger.warning("Could not load custom CSS: %s", e)
 
     def _add_action(self, name: str, callback: Any, accelerators: Optional[List[str]] = None) -> None:
         action = Gio.SimpleAction.new(name, None)

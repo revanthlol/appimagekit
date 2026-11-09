@@ -1,0 +1,127 @@
+/*
+ * AppImageKit — Modern Native GTK4 / Libadwaita Stylesheet
+ * Tactile micro-interactions, spring transitions, card elevations,
+ * animated drop target, and zero emojis.
+ */
+
+/* 1. Interactive Application Card */
+.app-card {
+    transition: transform 180ms cubic-bezier(0.25, 1, 0.5, 1),
+                box-shadow 180ms cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 150ms ease,
+                border-color 150ms ease;
+    border-radius: 12px;
+    outline: none;
+}
+
+.app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    border-color: alpha(@accent_color, 0.35);
+}
+
+.app-card:active {
+    transform: scale(0.97) translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* 2. Tactile Action Buttons */
+button.suggested-action,
+button.destructive-action,
+button.pill,
+.tactile-btn {
+    transition: transform 140ms cubic-bezier(0.25, 1, 0.5, 1),
+                box-shadow 140ms ease,
+                background-color 140ms ease;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+button.suggested-action:hover {
+    box-shadow: 0 4px 16px alpha(@accent_color, 0.35);
+}
+
+button.destructive-action:hover {
+    box-shadow: 0 4px 16px alpha(@destructive_color, 0.35);
+}
+
+/* 3. Drop Zone & Drag-Over Pulse */
+@keyframes dropzone-pulse {
+    0% {
+        border-color: alpha(@accent_color, 0.3);
+        background-color: alpha(@accent_color, 0.02);
+    }
+    50% {
+        border-color: @accent_color;
+        background-color: alpha(@accent_color, 0.08);
+    }
+    100% {
+        border-color: alpha(@accent_color, 0.3);
+        background-color: alpha(@accent_color, 0.02);
+    }
+}
+
+.drag-hover {
+    animation: dropzone-pulse 1.4s ease-in-out infinite;
+    border: 2px dashed @accent_color !important;
+    border-radius: 16px;
+    transition: transform 180ms ease;
+}
+
+.drop-zone-card {
+    border: 2px dashed alpha(@borders, 0.5);
+    border-radius: 16px;
+    padding: 24px;
+    transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.drop-zone-card:hover {
+    border-color: alpha(@accent_color, 0.6);
+    background-color: alpha(@accent_color, 0.03);
+}
+
+/* 4. Status Pills & Badges */
+.status-pill {
+    border-radius: 9999px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pill.up-to-date {
+    background-color: alpha(@success_color, 0.15);
+    color: @success_color;
+}
+
+.status-pill.update-available {
+    background-color: alpha(@warning_color, 0.15);
+    color: @warning_color;
+}
+
+.status-pill.sandboxed {
+    background-color: alpha(@accent_color, 0.15);
+    color: @accent_color;
+}
+
+/* 5. Navigation Sidebar Enhancements */
+.sidebar {
+    background-color: @window_bg_color;
+}
+
+.sidebar .navigation-sidebar row {
+    border-radius: 8px;
+    margin: 2px 6px;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.sidebar-metric-row {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.sidebar-metric-icon {
+    opacity: 0.7;
+    margin-right: 6px;
+}

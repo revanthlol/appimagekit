@@ -45,6 +45,7 @@ class AppCard(Gtk.Box):
 
         self.add_css_class("card")
         self.add_css_class("activatable")
+        self.add_css_class("app-card")
         self.set_size_request(160, 180)
         self.set_margin_top(6)
         self.set_margin_bottom(6)

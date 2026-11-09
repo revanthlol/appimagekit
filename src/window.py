@@ -140,8 +140,10 @@ class MainWindow(Adw.ApplicationWindow):
         self.split_view.set_min_sidebar_width(220)
         self.split_view.set_max_sidebar_width(320)
 
-        # Content ViewStack (Grid vs Details)
-        self.view_stack = Adw.ViewStack()
+        # Content ViewStack with smooth horizontal slide transitions
+        self.view_stack = Gtk.Stack()
+        self.view_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        self.view_stack.set_transition_duration(200)
 
         # Grid view
         self.app_grid = AppGridView(
