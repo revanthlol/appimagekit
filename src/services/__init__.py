@@ -15,12 +15,12 @@ from .installer import (
 )
 from .desktop_entry import DesktopEntryService
 from .icon_extractor import IconExtractorService
+from .updater import UpdaterService, UpdateInfo
 
 # Register stub module references for future milestone services
 # so test suites can import 'src' without premature import crashes,
 # while actual behavior is deferred to their respective milestones.
 _FUTURE_SERVICES = [
-    ("src.services.updater", ["UpdaterService", "UpdateInfo"]),
     ("src.services.sandbox", ["SandboxDetectorService"]),
     ("src.services.backup", ["BackupManagerService"]),
     ("src.services.hub", ["HubCatalogService"]),
@@ -45,4 +45,6 @@ __all__ = [
     "ExecutionError",
     "DesktopEntryService",
     "IconExtractorService",
+    "UpdaterService",
+    "UpdateInfo",
 ]

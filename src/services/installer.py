@@ -461,15 +461,71 @@ class InstallerService:
     def update_in_place(self, app: App, new_appimage_path: Path) -> App:
         """
         Tier 4 in-place local update (M3 scope).
-        Atomically replaces target binary, updates checksum and file size.
+        Atomically replaces target binary, updates checksum and file size,
+        refreshes icon and desktop entry while preserving user customizations.
         """
         valid_source = self.validate_source(new_appimage_path)
         dest_path = Path(app.install_path)
 
+        # 1. Atomically copy new binary to destination
         self._copy_binary(valid_source, dest_path)
         self._make_executable(dest_path)
 
+        # 2. Update checksum and size
         app.checksum_sha256 = self.calculate_sha256(dest_path)
         app.size_bytes = dest_path.stat().st_size
+
+        # 3. Extract new metadata (version, etc.)
+        if self.icon_service:
+            try:
+                metadata = self.icon_service.extract_metadata(dest_path)
+                if metadata.get("version"):
+                    app.version = metadata["version"]
+            except Exception as e:
+                logger.warning("Metadata extraction during update failed: %s", e)
+
+        if not app.version:
+            ver_match = re.search(r'[-_vV](\d+(?:\.\d+)+(?:[-.][0-9a-zA-Z]+)?)', valid_source.name)
+            if ver_match:
+                app.version = ver_match.group(1)
+
+        # 4. Refresh icon if available
+        if self.icon_service:
+            try:
+                new_icon = self.icon_service.extract_icon(
+                    dest_path,
+                    app_name=app.name,
+                    install_mode=app.install_mode,
+                )
+                if new_icon:
+                    app.icon_path = str(new_icon.resolve())
+            except Exception as e:
+                logger.warning("Icon extraction during update failed: %s", e)
+
+        # 5. Preserve user customizations and refresh desktop entry
+        if self.desktop_service and app.desktop_entry:
+            desk_path = Path(app.desktop_entry)
+            if desk_path.exists():
+                try:
+                    parsed_desk = self.desktop_service.parse_desktop_file(desk_path)
+                    if parsed_desk.get("comment"):
+                        app.comment = parsed_desk["comment"]
+                    if parsed_desk.get("categories"):
+                        app.category = parsed_desk["categories"]
+                    if parsed_desk.get("startup_wm_class"):
+                        app.startup_wm_class = parsed_desk["startup_wm_class"]
+                except Exception as e:
+                    logger.warning("Parsing existing desktop file failed: %s", e)
+            try:
+                new_desk = self.desktop_service.generate_entry(
+                    app, destination_dir=desk_path.parent if desk_path else None
+                )
+                app.desktop_entry = str(new_desk.resolve())
+            except Exception as e:
+                logger.warning("Regenerating desktop entry failed: %s", e)
+
+        # 6. Update database record with timestamp
+        from datetime import datetime, timezone
+        app.updated_at = datetime.now(timezone.utc).isoformat()
         self.db.update_app(app)
         return app
