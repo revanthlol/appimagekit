@@ -231,10 +231,11 @@ CREATE TABLE apps (
 - Preview the raw `.desktop` file content
 - Reset to auto-detected defaults
 
-### 5. Update System (3-tier cascade)
+### 5. Update System (4-tier cascade & manual file replacement)
 - **Tier 1 — AppImageUpdate/zsync:** Check for embedded update info via `--appimage-updateinformation`, use zsync for delta updates
 - **Tier 2 — GitHub Releases:** User provides `owner/repo`, app queries GitHub API for latest release, downloads new `.AppImage` asset
 - **Tier 3 — Manual URL:** User provides a direct download URL, app checks `Last-Modified` / `Content-Length` headers for changes
+- **Tier 4 — Manual Local File Upload:** User can select/upload or drag-and-drop a new local `.AppImage` file to update an existing app in-place, extracting new icons/metadata while preserving custom desktop settings and records
 - **Batch update:** "Update All" button
 - **Notification badge** on sidebar when updates are available
 
