@@ -2,8 +2,6 @@
 src/services/__init__.py — Application services for AppImageKit.
 """
 
-import sys
-import types
 from .installer import (
     InstallerService,
     InstallerError,
@@ -16,24 +14,11 @@ from .installer import (
 from .desktop_entry import DesktopEntryService
 from .icon_extractor import IconExtractorService
 from .updater import UpdaterService, UpdateInfo
-
-# Register stub module references for future milestone services
-# so test suites can import 'src' without premature import crashes,
-# while actual behavior is deferred to their respective milestones.
-_FUTURE_SERVICES = [
-    ("src.services.sandbox", ["SandboxDetectorService"]),
-    ("src.services.backup", ["BackupManagerService"]),
-    ("src.services.hub", ["HubCatalogService"]),
-    ("src.services.integrity", ["IntegrityVerifierService"]),
-    ("src.services.autostart", ["AutostartManager"]),
-]
-
-for mod_name, class_names in _FUTURE_SERVICES:
-    if mod_name not in sys.modules:
-        stub_mod = types.ModuleType(mod_name)
-        for cls_name in class_names:
-            setattr(stub_mod, cls_name, type(cls_name, (), {}))
-        sys.modules[mod_name] = stub_mod
+from .sandbox import SandboxDetectorService
+from .autostart import AutostartManager
+from .backup import BackupManagerService, BackupError
+from .integrity import IntegrityVerifierService
+from .hub import HubCatalogService, HubCatalogError
 
 __all__ = [
     "InstallerService",
@@ -47,4 +32,11 @@ __all__ = [
     "IconExtractorService",
     "UpdaterService",
     "UpdateInfo",
+    "SandboxDetectorService",
+    "AutostartManager",
+    "BackupManagerService",
+    "BackupError",
+    "IntegrityVerifierService",
+    "HubCatalogService",
+    "HubCatalogError",
 ]
